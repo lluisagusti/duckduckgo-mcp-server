@@ -1,38 +1,40 @@
-# DuckDuckGo Search MCP Server
+# Ollama MCP Server
 
-[![smithery badge](https://smithery.ai/badge/@nickclyde/duckduckgo-mcp-server)](https://smithery.ai/server/@nickclyde/duckduckgo-mcp-server)
-
-A Model Context Protocol (MCP) server that provides web search capabilities through DuckDuckGo, with additional features for content fetching and parsing.
-
-<a href="https://glama.ai/mcp/servers/phcus2gcpn">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/phcus2gcpn/badge" alt="DuckDuckGo Server MCP server" />
-</a>
+A Model Context Protocol (MCP) server that provides a complete interface to Ollama commands, allowing you to manage and run large language models through Ollama.
 
 ## Features
 
-- **Web Search**: Search DuckDuckGo with advanced rate limiting and result formatting
-- **Content Fetching**: Retrieve and parse webpage content with intelligent text extraction
-- **Rate Limiting**: Built-in protection against rate limits for both search and content fetching
+- **Complete Ollama Command Support**: Implements all major Ollama commands
+- **Model Management**: Create, show, run, stop, pull, push, list, and remove models
+- **Async Implementation**: Built with async/await for optimal performance
 - **Error Handling**: Comprehensive error handling and logging
-- **LLM-Friendly Output**: Results formatted specifically for large language model consumption
+- **Environment Configuration**: Configurable Ollama API endpoint
 
 ## Installation
-
-### Installing via Smithery
-
-To install DuckDuckGo Search Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@nickclyde/duckduckgo-mcp-server):
-
-```bash
-npx -y @smithery/cli install @nickclyde/duckduckgo-mcp-server --client claude
-```
 
 ### Installing via `uv`
 
 Install directly from PyPI using `uv`:
 
 ```bash
-uv pip install duckduckgo-mcp-server
+uv pip install ollama-mcp-server
 ```
+
+### Development Installation
+
+For local development:
+
+```bash
+git clone https://github.com/yourusername/ollama-mcp-server
+cd ollama-mcp-server
+uv pip install -e .
+```
+
+## Configuration
+
+The server uses the following environment variables:
+
+- `OLLAMA_API_URL`: The URL of your Ollama API (default: `http://localhost:11434`)
 
 ## Usage
 
@@ -48,9 +50,9 @@ Add the following configuration:
 ```json
 {
     "mcpServers": {
-        "ddg-search": {
+        "ollama": {
             "command": "uvx",
-            "args": ["duckduckgo-mcp-server"]
+            "args": ["ollama-mcp-server"]
         }
     }
 }
@@ -58,7 +60,35 @@ Add the following configuration:
 
 3. Restart Claude Desktop
 
-### Development
+### Available Commands
+
+- `create`: Create a model from a Modelfile
+- `show`: Show information for a model
+- `run`: Run a model
+- `stop`: Stop a running model
+- `pull`: Pull a model from a registry
+- `push`: Push a model to a registry
+- `list`: List models
+- `ps`: List running models
+- `cp`: Copy a model
+- `rm`: Remove a model
+
+### Example Modelfile
+
+```
+FROM gemma:7b
+SYSTEM "You will always respond in correct and natural English. You are a helpful and friendly assistant."
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER stop "User:"
+PARAMETER stop "Assistant:"
+PARAMETER num_ctx 2048
+PARAMETER repeat_penalty 1.1
+PARAMETER num_gpu 1
+LICENSE "CC BY-NC-SA 4.0"
+```
+
+## Development
 
 For local development, you can use the MCP CLI:
 
@@ -69,66 +99,15 @@ mcp dev server.py
 # Install locally for testing with Claude Desktop
 mcp install server.py
 ```
-## Available Tools
-
-### 1. Search Tool
-
-```python
-async def search(query: str, max_results: int = 10) -> str
-```
-
-Performs a web search on DuckDuckGo and returns formatted results.
-
-**Parameters:**
-- `query`: Search query string
-- `max_results`: Maximum number of results to return (default: 10)
-
-**Returns:**
-Formatted string containing search results with titles, URLs, and snippets.
-
-### 2. Content Fetching Tool
-
-```python
-async def fetch_content(url: str) -> str
-```
-
-Fetches and parses content from a webpage.
-
-**Parameters:**
-- `url`: The webpage URL to fetch content from
-
-**Returns:**
-Cleaned and formatted text content from the webpage.
-
-## Features in Detail
-
-### Rate Limiting
-
-- Search: Limited to 30 requests per minute
-- Content Fetching: Limited to 20 requests per minute
-- Automatic queue management and wait times
-
-### Result Processing
-
-- Removes ads and irrelevant content
-- Cleans up DuckDuckGo redirect URLs
-- Formats results for optimal LLM consumption
-- Truncates long content appropriately
-
-### Error Handling
-
-- Comprehensive error catching and reporting
-- Detailed logging through MCP context
-- Graceful degradation on rate limits or timeouts
 
 ## Contributing
 
 Issues and pull requests are welcome! Some areas for potential improvement:
 
-- Additional search parameters (region, language, etc.)
-- Enhanced content parsing options
-- Caching layer for frequently accessed content
-- Additional rate limiting strategies
+- Additional parameter validation
+- Enhanced error handling
+- Caching layer for frequently used models
+- Support for advanced Ollama features
 
 ## License
 

@@ -1,28 +1,24 @@
 [project]
-name = "duckduckgo-mcp-server"
-version = "0.1.1"
-description = "MCP Server for searching via DuckDuckGo"
+name = "ollama-mcp-server"
+version = "0.1.0"
+description = "MCP Server for Ollama commands"
 readme = "README.md"
-authors = [{ name = "Nick Clyde", email = "nick@clyde.tech" }]
+authors = [{ name = "Your Name", email = "your.email@example.com" }]
 requires-python = ">=3.10"
-dependencies = ["beautifulsoup4>=4.13.3", "httpx>=0.28.1", "mcp[cli]>=1.3.0"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+dependencies = [
+    "mcp[cli]>=1.3.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.0.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0"
 ]
 
 [project.urls]
-Homepage = "https://github.com/nickclyde/duckduckgo-mcp-server"
-Issues = "https://github.com/nickclyde/duckduckgo-mcp-server/issues"
+Homepage = "https://github.com/yourusername/ollama-mcp-server"
+Issues = "https://github.com/yourusername/ollama-mcp-server/issues"
 
 [project.scripts]
-duckduckgo-mcp-server = "duckduckgo_mcp_server.server:main"
+ollama-mcp-server = "ollama_mcp_server.server:main"
 
 [build-system]
 requires = ["hatchling"]
